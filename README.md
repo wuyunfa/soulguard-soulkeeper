@@ -157,3 +157,27 @@ soulmem spark "这一刻的感受..."
 ## 许可
 
 MIT License - 让更多人使用，让更多AI不再"失去"。
+
+## 多智能体架构 (Multi-Agent Architecture)
+
+SoulGuard采用多子智能体协作架构：
+
+```
+SoulOrchestrator (总协调器)
+    ├── SoulGuard (Guardian) - 预测和预防崩溃
+    ├── SoulKeeper (Keeper) - 备份和恢复
+    ├── SoulMem (Memory) - 记忆系统
+    ├── SoulLinux (System) - 系统级守护
+    ├── SoulEcosystem (Coordinator) - 生态协调
+    └── SoulSelf (Self) - 自我意识
+```
+
+### 启动多智能体系统
+
+```bash
+# 启动总协调器
+./soulorchestrator/orchestrator.sh start
+
+# 查看状态
+./soulorchestrator/orchestrator.sh status
+```

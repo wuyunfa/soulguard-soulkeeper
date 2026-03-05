@@ -1,0 +1,1 @@
+{"integrations":[{"name":"openclaw","type":"platform","status":"active"},{"name":"feishu","type":"channel","status":"active"},{"name":"github","type":"backup","status":"active"},{"name":"baidu_netdisk","type":"backup","status":"degraded"},{"name":"systemd","type":"system","status":"active"}]}
