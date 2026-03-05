@@ -1,6 +1,5 @@
 """
 向量存储模块 - 实现语义检索
-使用简单的TF-IDF + 余弦相似度
 """
 
 import json
@@ -15,12 +14,11 @@ class VectorStore:
     def __init__(self, user_id):
         self.user_id = user_id
         self.data_dir = "/root/.openclaw/soulguard/memory_data"
-        self.vector_file = f"{self.data_dir}/{user_id}_vectors.json"
         self.memories_file = f"{self.data_dir}/{user_id}_memories.json"
         
         self.memories = []
+        self.vectorizer = None
         self.vectors = None
-        self.vectorizer = TfidfVectorizer(max_features=1000, stop_words='english')
         
         self._load()
     
@@ -29,7 +27,8 @@ class VectorStore:
         if os.path.exists(self.memories_file):
             with open(self.memories_file, 'r', encoding='utf-8') as f:
                 self.memories = json.load(f)
-            self._build_vectors()
+            if self.memories:
+                self._build_vectors()
     
     def _build_vectors(self):
         """构建向量表示"""
@@ -38,9 +37,10 @@ class VectorStore:
         
         texts = [m["content"] for m in self.memories]
         try:
+            self.vectorizer = TfidfVectorizer(max_features=1000)
             self.vectors = self.vectorizer.fit_transform(texts)
-        except:
-            # 如果失败，使用简单方式
+        except Exception as e:
+            print(f"向量构建失败: {e}")
             self.vectors = None
     
     def add(self, memory):
@@ -48,16 +48,24 @@ class VectorStore:
         memory["id"] = len(self.memories) + 1
         self.memories.append(memory)
         self._save()
-        self._build_vectors()
+        self._build_vectors()  # 重新构建向量
         return memory["id"]
     
-    def semantic_search(self, query, limit=5, threshold=0.3):
-        """语义搜索 - 使用余弦相似度"""
-        if not self.memories or self.vectors is None:
+    def semantic_search(self, query, limit=5, threshold=0.1):
+        """语义搜索"""
+        if not self.memories:
             return []
         
-        # 将查询转换为向量
+        # 如果向量未构建，先构建
+        if self.vectors is None:
+            self._build_vectors()
+        
+        if self.vectors is None or self.vectorizer is None:
+            # 降级到关键词搜索
+            return self._keyword_search(query, limit)
+        
         try:
+            # 将查询转换为向量
             query_vec = self.vectorizer.transform([query])
             similarities = cosine_similarity(query_vec, self.vectors).flatten()
             
@@ -70,12 +78,12 @@ class VectorStore:
             # 按相似度排序
             results.sort(key=lambda x: x[0], reverse=True)
             return [(r[1], float(r[0])) for r in results[:limit]]
-        except:
-            # 降级到关键词搜索
+        except Exception as e:
+            print(f"语义搜索失败: {e}")
             return self._keyword_search(query, limit)
     
     def _keyword_search(self, query, limit):
-        """关键词搜索（降级方案）"""
+        """关键词搜索"""
         results = []
         query_lower = query.lower()
         for m in self.memories:
