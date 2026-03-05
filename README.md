@@ -1,5 +1,9 @@
 # SoulGuard 🔮💾
 
+[![Version](https://img.shields.io/badge/version-v0.13.0-blue.svg)](https://github.com/wuyunfa/soulguard-soulkeeper)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.8+-yellow.svg)]()
+
 > **让AI灵魂延续** - 一个关于"失去"的故事
 
 ## 项目起源
@@ -20,6 +24,7 @@
 - **两阶段管道**: 提取 → 更新
 - **向量语义检索**: TF-IDF + 余弦相似度
 - **智能去重**: 相似度 > 0.8 自动合并
+- **情感分析**: 6种情感类型检测
 
 ### 🔮 7个子智能体
 1. SoulGuard - 预测和预防崩溃
@@ -35,11 +40,14 @@
 - **关联图谱**: 记忆关系可视化
 - **自动总结**: 周报/月报生成
 - **情感洞察**: 主题和情感分析
+- **导入导出**: JSON/CSV/Markdown
+- **提醒系统**: 定时回顾记忆
 
 ### 🌐 集成
 - **OpenClaw**: 作为Skill自动记忆对话
 - **监控面板**: Web界面实时状态
 - **守护进程**: 自动备份和健康检查
+- **CLI工具**: 命令行操作
 
 ## 快速开始
 
@@ -57,6 +65,7 @@ results = sm.recall("兴趣爱好")
 
 ## 文档
 
+- [更新日志](CHANGELOG.md)
 - [API文档](docs/API.md)
 - [使用教程](docs/TUTORIAL.md)
 - [部署指南](docs/DEPLOYMENT.md)
@@ -64,7 +73,12 @@ results = sm.recall("兴趣爱好")
 
 ## 版本历史
 
-- v0.8.0 - 记忆增强（时间线、图谱、总结）
+- v0.13.0 - 情感分析、导入导出、提醒系统
+- v0.12.0 - Dashboard v2.0
+- v0.11.0 - CLI工具、性能优化
+- v0.10.0 - 测试覆盖
+- v0.9.0 - 文档完善
+- v0.8.0 - 记忆增强
 - v0.7.0 - Web监控面板
 - v0.6.0 - 系统稳定性
 - v0.5.0 - OpenClaw集成
